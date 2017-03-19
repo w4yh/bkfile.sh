@@ -17,13 +17,6 @@ then
   exit 9
 fi
 
-if [ `echo $1 | grep -c "/"` -ne 0 ];
-then
-  TARGETDIR=`basename $1`
-else
-  TARGETDIR=.
-fi
-
 if [ ! -e $1.bak$TODAY ]
 then
   BKFILE=$1.bak$TODAY
