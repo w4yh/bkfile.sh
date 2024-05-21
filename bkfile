@@ -5,6 +5,9 @@
 
 TODAY=`date +%Y%m%d`
 
+# (Optional) Directory to save backup files.
+BKDIR=""
+
 if [ $# -ne 1 ];
 then
   echo "usage: bkfile filename"
@@ -17,16 +20,29 @@ then
   exit 9
 fi
 
-if [ ! -e $1.bak$TODAY ]
+if [ $BKDIR ] 
+then 
+  if [ ! -d $BKDIR ] 
+  then 
+    echo "unknown BKDIR: $BKDIR not found"
+    exit 9
+  else
+    TARGET=${BKDIR}/$1 
+  fi
+else
+  TARGET=$1
+fi
+
+if [ ! -e ${TARGET}.${TODAY} ]
 then
-  BKFILE=$1.bak$TODAY
+  BKFILE=${TARGET}.${TODAY}
 else
   icount=1
   while :
   do
-    if [ ! -e $1.bak${TODAY}_$icount ]
+    if [ ! -e ${TARGET}.${TODAY}_$icount ]
     then
-      BKFILE=$1.bak${TODAY}_$icount
+      BKFILE=${TARGET}.${TODAY}_$icount
       break
     else
       icount=`echo "$icount +1" | bc -l`
